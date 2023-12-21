@@ -1,0 +1,35 @@
+Multiple MSPEC Folders
+George Peafowl D65 
+dbl
+Peafowl 0.05
+No
+8
+1000
+Normalise & Rois
+circleN
+Yes
+Yes
+No
+No
+No
+No
+egg1,egg2,egg3,egg4
+Yes
+No
+egg1,egg2,egg3,egg4
+Yes
+No
+DoG
+egg1,egg2,egg3,egg4
+4
+3
+1
+2
+6
+0
+SetScale
+30
+Target
+Current
+0
+1
