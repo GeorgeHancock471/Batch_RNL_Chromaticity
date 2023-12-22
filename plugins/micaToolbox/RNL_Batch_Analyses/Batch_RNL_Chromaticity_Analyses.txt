@@ -498,6 +498,12 @@ if(File.exists(fileSaveDIR_GabRat)) File.delete(fileSaveDIR_GabRat);
 if(File.exists(fileSaveDIR_Pattern)) File.delete(fileSaveDIR_Pattern);
 }
 
+
+if(File.exists(fileSaveDIR_Simple)) printCheckSimple=1;
+if(File.exists(fileSaveDIR_GabRat)) printCheckGabRat=1;
+if(File.exists(fileSaveDIR_Pattern)) printCheckPattern=1;
+
+
 // Organise ROI lists
 //---------------------------------------------------
 
