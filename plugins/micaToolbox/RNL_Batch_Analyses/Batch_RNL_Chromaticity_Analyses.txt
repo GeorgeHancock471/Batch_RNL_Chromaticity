@@ -107,7 +107,7 @@ return roiLocs1;
 // Arrays for settings
 //---------------------------------------------------
 
-lumChannelArray = newArray("dbl", "lw", "lw mw", "x", "x y"); // luminance channel options
+lumChannelArray = newArray("dbl", "lw", "lw mw", "x", "x y", "mw"); // luminance channel options
 
 yesNo=newArray("No","Yes"); // alternative checkbox
 
@@ -453,11 +453,11 @@ selectWindow("Progress Table");
 
 getDateAndTime(year, month, dayOfWeek, dayOfMonth, hour, minute, second, msec);
 
-dhour = hour;
-if(lengthOf(dhour)<2)dminute=0+toString(dhour);
+dhour = toString(hour);
+if(lengthOf(dhour)==1)dhour=toString(0)+toString(dhour);
 
-dminute = minute;
-if(lengthOf(dminute)<2)dminute=0+toString(dminute);
+dminute = toString(minute);
+if(lengthOf(dminute)==1)dminute=toString(0)+toString(dminute);
 
 startTime = getTime();
 Table.set("Start_Time",0,toString(dhour+":"+dminute));
@@ -1167,11 +1167,15 @@ Table.update;
 		w= w*(rescale);
 		h=h*(rescale);
 		run("Select None");
+		
+		selectImage("RNL");
+		run("Select None");
 		run("Size...", "width=&w height=&h constrain average interpolation=Bilinear");
 		
-
-
-
+		selectImage("LUM");
+		run("Select None");
+		run("Size...", "width=&w height=&h constrain average interpolation=Bilinear");
+		
 
 			for(i=0; i<nSelections; i++){
 				roiManager("select", i);
@@ -1369,15 +1373,17 @@ Table.update;
 		selectImage("LUM");
 		roiManager("select", roiInd);
 		
-			
 			if(PatMethod=="DoG") run("DoG ROI bandpass smooth", "sigma1=1 sigma2=2 number_of_octaves="+nOctaves+" label=Pat");
 			if(PatMethod=="Gabor2") run("Gabor ROI Bandpass Smooth", "number_of_angles=2 sigma=2 gamma=1 frequency=3 number_of_octaves="+nOctaves+" label=Pat");
 			if(PatMethod=="Gabor4") run("Gabor ROI Bandpass Smooth", "number_of_angles=4 sigma=2 gamma=1 frequency=3 number_of_octaves="+nOctaves+" label=Pat");
 			if(PatMethod=="Gabor6") run("Gabor ROI Bandpass Smooth", "number_of_angles=6 sigma=2 gamma=1 frequency=3 number_of_octaves="+nOctaves+" label=Pat");
 			
 			roiManager("select", roiInd);
-			Roi.move(0,0);
 			roiManager("Add");	
+			roiManager("select",roiManager("count")-1);
+			Roi.move(0,0);
+			roiManager("Update");
+
 			
 					for(o=0;o<nOctaves;o++){ // Repeat for n-octaves
 					for(ag=0;ag<nAng;ag++){	// Repeat for n-angles
@@ -1412,7 +1418,7 @@ Table.update;
 		for(i=0;i<rnlN;i++){
 		selectImage("RNL");
 		roiManager("select", roiInd);
-		
+		setSlice(i+1);
 			
 			if(PatMethod=="DoG") run("DoG ROI bandpass smooth", "sigma1=1 sigma2=2 number_of_octaves="+nOctaves+" label=Pat");
 			if(PatMethod=="Gabor2") run("Gabor ROI Bandpass Smooth", "number_of_angles=2 sigma=2 gamma=1 frequency=3 number_of_octaves="+nOctaves+" label=Pat");
@@ -1420,8 +1426,10 @@ Table.update;
 			if(PatMethod=="Gabor6") run("Gabor ROI Bandpass Smooth", "number_of_angles=6 sigma=2 gamma=1 frequency=3 number_of_octaves="+nOctaves+" label=Pat");
 			
 			roiManager("select", roiInd);
-			Roi.move(0,0);
 			roiManager("Add");	
+			roiManager("select",roiManager("count")-1);
+			Roi.move(0,0);
+			roiManager("Update");
 				
 					for(o=0;o<nOctaves;o++){ // Repeat for n-octaves
 					for(ag=0;ag<nAng;ag++){	// Repeat for n-angles
@@ -1500,11 +1508,11 @@ Table.update;
 		
 		while(totalHour>=24)totalHour += -24;
 		
-		dtotalHour = totalHour;
-		if(lengthOf(dtotalHour)<2)dtotalHour=0+toString(dtotalHour);
+		dtotalHour = toString(totalHour);
+		if(lengthOf(dtotalHour)==1)dtotalHour="0"+toString(dtotalHour);
 
-		dminV = minV;
-		if(lengthOf(dminV)<2)dv=0+toString(dminV);
+		dminV = toString(minV);
+		if(lengthOf(dminV)==1)dminV="0"+toString(dminV);
 
 		
 //Tables
@@ -1532,10 +1540,10 @@ print("Done");
 selectWindow("Progress Table");
 getDateAndTime(year, month, dayOfWeek, dayOfMonth, hour, minute, second, msec);
 
-dhour = hour;
-if(lengthOf(dhour)<2)dminute=0+toString(dhour);
+dhour = toString(hour);
+if(lengthOf(dhour)==1)dhour=toString(0)+toString(dhour);
 
-dminute = minute;
-if(lengthOf(dminute)<2)dminute=0+toString(dminute);
+dminute = toString(minute);
+if(lengthOf(dminute)==1)dminute=toString(0)+toString(dminute);
 
 Table.set("Finish_Time",0,toString(dhour+":"+dminute));
