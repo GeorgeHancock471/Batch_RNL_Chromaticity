@@ -378,11 +378,15 @@ Dialog.create("BonusSettings:");
 	Dialog.addCheckbox("TestMode (Only enable if you don't wish to run analyses)",defaultSettings[33]);
 	
 	Dialog.addMessage("DeleteExisting \n ............................");
-	Dialog.addCheckbox("Delete (Only disable if you need to append more)",defaultSettings[33]);
+	Dialog.addCheckbox("Delete (Only disable if you need to append more)",defaultSettings[34]);
+	
+	Dialog.addMessage("Output Label \n ............................");
+	Dialog.addString("Label", webMethod, 30);
 Dialog.show();
 
 TestMode = Dialog.getCheckbox();
 DeleteOld = Dialog.getCheckbox();
+labelN = Dialog.getString();
 
 // Save Values
 //---------------------------------------------------
@@ -482,7 +486,7 @@ Table.update;
 // SaveNames
 //---------------------------------------------------
 
-fileSaveTitle = "Batch_RNL_"+coneMethod;
+fileSaveTitle = "Batch_RNL_"+labelN;
 
 fileSaveDIR_Simple = imageDIR + fileSaveTitle+"_Simple.txt";
 fileSaveDIR_GabRat = imageDIR + fileSaveTitle+"_GabRat.txt";
@@ -717,6 +721,7 @@ Table.update;
 		//===============================================
 		
 		if(CropROI != "None"){
+		noROIfound=1;
 		for(i=0; i<nSelections; i++){
 				roiManager("select", i);
 				selName = getInfo("selection.name");
@@ -728,9 +733,11 @@ Table.update;
 				roiManager("update");
 				run("Select None");
 				i = nSelections;
+				noROIfound=0;
 				}	
 			}//i
-
+		
+		if(noROIfound==0){
 		for(i=0; i<nSelections; i++){
 				roiManager("select", i);
 				Roi.getBounds(x, y, width, height);
@@ -740,7 +747,10 @@ Table.update;
 				roiManager("update");
 				
 			}//i
-			
+		}
+		
+		
+		
 		}
 
 
@@ -1146,6 +1156,8 @@ Table.update;
 			}//i
 		
 		
+
+		
 		if(scMethod=="ROI_Area"){
 		getStatistics(area);
 		wl =  Math.sqrt(area);
@@ -1227,7 +1239,7 @@ Table.update;
 		if(PatMethod=="DoG") nAng =1;
 		if(PatMethod=="Gabor2"){ nAng =2; aInt=90; }
 		if(PatMethod=="Gabor4"){ nAng =4; aInt=45;  }
-		if(PatMethod=="Gabor4"){ nAng =6; aInt=22.5;  }
+		if(PatMethod=="Gabor6"){ nAng =6; aInt=22.5;  }
 	
 
 		// Measure if ROI mode != Current
@@ -1319,7 +1331,7 @@ Table.update;
 			
 				for(o=0;o<nOctaves;o++){ // Repeat for n-octaves
 					for(ag=0;ag<nAng;ag++){	// Repeat for n-angles
-					setSlice(o*nAng+ag+1);
+					setSlice(o*nAng+(ag+1));
 					
 					if(PatMethod!="DoG") title = PatArray[i]+"_"+1/Math.pow(2,(nOctaves-o-offset-1))+"_"+ag*aInt;
 					if(PatMethod=="DoG") title = PatArray[i]+"_"+1/Math.pow(2,(nOctaves-o-offset-1));
